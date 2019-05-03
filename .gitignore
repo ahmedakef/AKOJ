@@ -1,0 +1,8 @@
+*.pyc
+
+#Database
+*.sqlite3
+
+staticfiles/
+Pipfile
+.vscode/
