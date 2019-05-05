@@ -21,9 +21,13 @@ class SubmissionViewSet(generics.ListCreateAPIView):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
 
-    def post(self, request, *args, **kwargs):
-        code_language = request.data["Code_language"]
-        source_code = request.data["Code"]
+
+
+    def perform_create(self, serializer):
+        created_submission = serializer.save()
+
+        code_language = created_submission.Code_language
+        source_code = created_submission.Code
 
         compilar = Compilar(source_code, code_language)
 
@@ -31,13 +35,16 @@ class SubmissionViewSet(generics.ListCreateAPIView):
             result = compilar.compile(compilar.file_name)
             print(compilar.codes[result])
 
-        result = compilar.run(compilar.testin, compilar.timeout)
-        print(compilar.codes[result])
-        Accepted = compilar.match(compilar.testout)  # True implies that code is accepted.
-        print(Accepted)
+        Accepted = True
+        tescases = TestCase.objects.filter(Problem = created_submission.Problem )
+        for testcase in tescases:
+            result = compilar.run(testcase.Input, created_submission.Problem.Time_limit)
+            print(compilar.codes[result])
+            Accepted = Accepted and compilar.match(testcase.Output)
+            print(Accepted)
 
-
-        return self.create(request, *args, **kwargs)
+        Verdict = "ACC" if Accepted == True else "WA"
+        created_submission.Verdict = Verdict
 
 
 

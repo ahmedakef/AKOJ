@@ -35,11 +35,10 @@ class Compilar:
         elif self.file_name == 'cpp':
             self.class_file = self.file_name[:-4]
 
-        self.testin = 'testin.txt'
-        self.testout = 'testout.txt'
-        self.timeout = '1'  # secs
 
-
+        self.input_file = "input.txt"
+        self.output_file = "output.txt"
+        self.program_output = "program_output.txt"
 
 
     def compile(self,source_code):
@@ -63,6 +62,9 @@ class Compilar:
 
     def run(self,input_data, timeout):
 
+        with open(self.input_file,"w") as f:
+            f.write(input_data)
+
         if self.language == 'java':
             cmd = 'java '+ self.class_file
         elif self.language == 'c' or self.language == 'cpp':
@@ -70,7 +72,7 @@ class Compilar:
         elif self.language == 'python':
             cmd = 'python ' +  self.file_name
 
-        command = 'timeout '+timeout+' '+cmd+' < ' + input_data + ' > out.txt'
+        command = 'timeout '+ str(timeout) +' '+cmd+' < ' + self.input_file + ' > ' + self.program_output
         r = os.system(command)
 
         if self.language != 'python':
@@ -87,8 +89,11 @@ class Compilar:
 
 
     def match(self, output):
-        if os.path.isfile('out.txt') and os.path.isfile(output):
-            b = filecmp.cmp('out.txt', output)
+        with open(self.output_file,"w") as f:
+            f.write(output)
+
+        if os.path.isfile(self.program_output) and os.path.isfile(self.output_file):
+            b = filecmp.cmp(self.program_output, self.output_file)
             return b
         else:
             return 404

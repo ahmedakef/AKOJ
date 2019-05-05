@@ -9,10 +9,11 @@ class ProblemSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Submission
-        fields = ('Problem', 'Code', 'Code_language','Time','Memory','Score')
-        read_only_fields = ('Time','Memory','Score')
+        fields = ('Problem', 'Code', 'Code_language', 'Verdict','Time','Memory','Score')
+        read_only_fields = ('Verdict', 'Time','Memory','Score')
 
 
 
