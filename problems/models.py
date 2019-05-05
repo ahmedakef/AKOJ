@@ -25,15 +25,21 @@ class Problem(models.Model):
     Time_limit = models.DecimalField(max_digits=5, decimal_places=3)
     Memory_limit = models.DecimalField(max_digits=1000, decimal_places=8)
 
+    def __str__(self):
+        return self.Problem_Name
+
+
 
 class Submission(models.Model):
     Problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     Code = models.TextField()
     Code_language = models.CharField(max_length=4, choices=Languages)
     Verdict = models.CharField(max_length=4, choices=Verdicts)
-    Time = models.DecimalField(max_digits=5, decimal_places=3)
-    Memory = models.DecimalField(max_digits=5, decimal_places=3)
-    Score = models.DecimalField(max_digits=5, decimal_places=3)
+    Time = models.DecimalField(max_digits=5, decimal_places=3 ,null=True)
+    Memory = models.DecimalField(max_digits=5, decimal_places=3 ,null=True)
+    Score = models.DecimalField(max_digits=5, decimal_places=3 ,null=True)
+
+
 
 
 class TestCase(models.Model):

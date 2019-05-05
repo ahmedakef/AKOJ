@@ -4,11 +4,12 @@ from problems import views
 
 router = routers.DefaultRouter()
 router.register(r'problem', views.ProblemViewSet)
-router.register(r'submission', views.SubmissionViewSet)
 router.register(r'testcase', views.TestCaseViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
+    path('submission/', views.SubmissionViewSet.as_view()),
+
 ]

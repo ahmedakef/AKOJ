@@ -12,6 +12,7 @@ class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Submission
         fields = ('Problem', 'Code', 'Code_language','Time','Memory','Score')
+        read_only_fields = ('Time','Memory','Score')
 
 
 
