@@ -14,3 +14,4 @@ sandbox/input.txt
 sandbox/output.txt
 sandbox/program_output.txt
 sandbox/program.*
+sandbox/program*

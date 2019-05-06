@@ -16,7 +16,7 @@ class Compilar:
         "py": 'python',
         "cpp": 'c++',
         "c": 'c',
-        "java": 'Java'
+        "java": 'java'
     }
 
     def __init__(self, source_code, lang):
@@ -25,14 +25,16 @@ class Compilar:
 
         self.language = self.languages[lang]
         self.file_name = "program.{}".format(lang)
+
+        # create file using the source code
         with open(self.file_name,"w") as f:
             f.write(source_code)
 
-        if self.file_name == 'java':
+        if self.language == 'java':
             self.class_file = self.file_name[:6]+".class"
-        elif self.file_name == 'c':
+        elif self.language == 'c':
             self.class_file = self.file_name[:-2]
-        elif self.file_name == 'cpp':
+        elif self.language == 'c++':
             self.class_file = self.file_name[:-4]
 
 
@@ -46,9 +48,8 @@ class Compilar:
         if (os.path.isfile(self.file_name)):
             if self.language == 'java':
                 cmd = 'javac '+ self.file_name
-                os.system()
             elif self.language == 'c' or self.language == 'c++':
-                cmd = 'gcc -o '+ self.class_file + ' ' + self.file_name
+                cmd = 'g++ -o '+ self.class_file + ' ' + self.file_name
 
             os.system(cmd)
             
@@ -67,7 +68,7 @@ class Compilar:
 
         if self.language == 'java':
             cmd = 'java '+ self.class_file
-        elif self.language == 'c' or self.language == 'cpp':
+        elif self.language == 'c' or self.language == 'c++':
             cmd = './'+ self.class_file
         elif self.language == 'python':
             cmd = 'python ' +  self.file_name
@@ -75,16 +76,13 @@ class Compilar:
         command = 'timeout '+ str(timeout) +' '+cmd+' < ' + self.input_file + ' > ' + self.program_output
         r = os.system(command)
 
-        if self.language != 'python':
-            os.remove(self.class_file)
-
         if r == 0:
             return 200
         elif r == 31744:
-            os.remove('out.txt')
+            os.remove(self.program_output)
             return 408
         else:
-            os.remove('out.txt')
+            os.remove(self.program_output)
             return 400
 
 

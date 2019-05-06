@@ -18,7 +18,7 @@ Verdicts = (
 )
 
 class Problem(models.Model):
-    Problem_Name = models.CharField(max_length = 10)
+    Problem_Name = models.CharField(max_length = 90)
     statement = models.TextField()
     solution = models.TextField()
     solution_language = models.CharField(max_length=4, choices=Languages)

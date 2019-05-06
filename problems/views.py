@@ -33,19 +33,23 @@ class SubmissionViewSet(generics.ListCreateAPIView):
 
         if compilar.language != 'python':
             result = compilar.compile(compilar.file_name)
-            print(compilar.codes[result])
+            print("compilation result : {}".format(compilar.codes[result]))
 
         Accepted = True
+        i=0
         tescases = TestCase.objects.filter(Problem = created_submission.Problem )
         for testcase in tescases:
+            i+=1
             result = compilar.run(testcase.Input, created_submission.Problem.Time_limit)
-            print(compilar.codes[result])
+            print("{} on test case :{}".format(compilar.codes[result],i))
             Accepted = Accepted and compilar.match(testcase.Output)
-            print(Accepted)
+            if Accepted == False:
+                print("faild on test case".format(i))
+                break
 
         Verdict = "ACC" if Accepted == True else "WA"
         created_submission.Verdict = Verdict
-
+        created_submission.save()
 
 
 class TestCaseViewSet(viewsets.ModelViewSet):
