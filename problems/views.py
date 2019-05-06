@@ -58,3 +58,23 @@ class TestCaseViewSet(viewsets.ModelViewSet):
     """
     queryset = TestCase.objects.all()
     serializer_class = TestCaseSerializer
+
+
+
+    def perform_create(self, serializer):
+        created_testcase = serializer.save()
+
+        code_language = created_testcase.Problem.solution_language
+        source_code = created_testcase.Problem.solution
+
+        compilar = Compilar(source_code, code_language)
+
+        if compilar.language != 'python':
+            result = compilar.compile(compilar.file_name)
+            print("compilation result : {}".format(compilar.codes[result]))
+
+        result = compilar.run(created_testcase.Input, created_testcase.Problem.Time_limit)
+        if compilar.codes[result] == 'success':
+            created_testcase.Output = open(compilar.program_output, "r").read()
+
+        created_testcase.save()

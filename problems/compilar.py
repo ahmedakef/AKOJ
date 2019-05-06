@@ -20,11 +20,11 @@ class Compilar:
     }
 
     def __init__(self, source_code, lang):
-        PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
-        os.chdir(PROJECT_PATH + '/sandbox')
+        # PROJECT_PATH = os.path.dirname(os.path.dirname(__file__))
+        # os.chdir(PROJECT_PATH + '/sandbox')
 
         self.language = self.languages[lang]
-        self.file_name = "program.{}".format(lang)
+        self.file_name = "sandbox/program.{}".format(lang)
 
         # create file using the source code
         with open(self.file_name,"w") as f:
@@ -38,9 +38,9 @@ class Compilar:
             self.class_file = self.file_name[:-4]
 
 
-        self.input_file = "input.txt"
-        self.output_file = "output.txt"
-        self.program_output = "program_output.txt"
+        self.input_file = "sandbox/input.txt"
+        self.output_file = "sandbox/output.txt"
+        self.program_output = "sandbox/program_output.txt"
 
 
     def compile(self,source_code):

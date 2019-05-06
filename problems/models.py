@@ -43,6 +43,9 @@ class Submission(models.Model):
 
 
 class TestCase(models.Model):
-    Problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    Problem = models.ForeignKey(Problem, related_name='testcases', on_delete=models.CASCADE)
     Input  = models.TextField()
-    Output = models.TextField()
+    Output = models.TextField(null=True)
+
+    def __str__(self):
+        return "test case {} for problem {}".format(self.pk, self.Problem.Problem_Name)
